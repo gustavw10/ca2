@@ -15,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -22,6 +24,9 @@ import javax.persistence.OneToMany;
  * @author Gustav
  */
 @Entity
+@NamedQueries({
+@NamedQuery(name = "Person.deleteAllRows", query = "DELETE from Person"),
+@NamedQuery(name = "Person.getAll", query = "SELECT p FROM Person p")}) 
 public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,7 +40,7 @@ public class Person implements Serializable {
     @ManyToMany(mappedBy = "persons", cascade = CascadeType.PERSIST)
     List<Hobby> hobbies;
     
-    @OneToMany(mappedBy="person")
+    @OneToMany(mappedBy="person", cascade = { CascadeType.PERSIST })
     private List<Phone> phones;
     
     @ManyToOne(cascade = { CascadeType.PERSIST })
