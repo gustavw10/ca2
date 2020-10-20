@@ -39,8 +39,9 @@ public class Person implements Serializable {
     
     @ManyToMany(mappedBy = "persons", cascade = CascadeType.PERSIST)
     List<Hobby> hobbies;
-    
+
     @OneToMany(mappedBy="person", cascade = { CascadeType.PERSIST })
+
     private List<Phone> phones;
     
     @ManyToOne(cascade = { CascadeType.PERSIST })

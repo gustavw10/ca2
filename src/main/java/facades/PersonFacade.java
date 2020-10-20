@@ -14,13 +14,13 @@ import javax.persistence.Persistence;
  *
  * Rename Class to a relevant name Add add relevant facade methods
  */
-public class FacadeExample {
+public class PersonFacade {
 
-    private static FacadeExample instance;
+    private static PersonFacade instance;
     private static EntityManagerFactory emf;
 
     //Private Constructor to ensure Singleton
-    private FacadeExample() {
+    private PersonFacade() {
     }
 
     /**
@@ -28,10 +28,10 @@ public class FacadeExample {
      * @param _emf
      * @return an instance of this facade class.
      */
-    public static FacadeExample getFacadeExample(EntityManagerFactory _emf) {
+    public static PersonFacade getPersonFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
-            instance = new FacadeExample();
+            instance = new PersonFacade();
         }
         return instance;
     }
@@ -97,6 +97,7 @@ public class FacadeExample {
 
         System.out.println(person1.getHobbies().get(0).getName());
         System.out.println(person2.getHobbies().get(0).getName());
+
 
         try {
             em.getTransaction().begin();
