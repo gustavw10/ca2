@@ -23,7 +23,8 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({
-@NamedQuery(name = "CityInfo.getAll", query = "SELECT c from CityInfo c")}) 
+@NamedQuery(name = "CityInfo.getAll", query = "SELECT c from CityInfo c"),
+@NamedQuery(name = "CityInfo.deleteAllRows", query = "DELETE from CityInfo")}) 
 public class CityInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;

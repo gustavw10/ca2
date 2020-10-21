@@ -2,6 +2,7 @@ package facades;
 
 import dto.CityInfoDTO;
 import dto.CityInfosDTO;
+import dto.HobbyDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
 import entities.Address;
@@ -90,15 +91,15 @@ public class PersonFacade implements IPersonFacade {
     public PersonDTO deletePerson(long id) throws PersonNotFoundException {
         EntityManager em = getEntityManager();
         Person person = em.find(Person.class, id);
-        
+
         if (person == null) {
             throw new PersonNotFoundException(String.format("Person with id: (%d) not found", id));
         } else {
             try {
                 List<Phone> phones = person.getPhones();
-                
+
                 em.getTransaction().begin();
-                for(int i = 0; i < phones.size(); i++){
+                for (int i = 0; i < phones.size(); i++) {
                     em.remove(phones.get(i));
                 }
                 em.remove(person);
@@ -110,21 +111,20 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
-@Override
+    @Override
     public PersonDTO getPerson(long id) throws PersonNotFoundException {
-       EntityManager em = getEntityManager();
+        EntityManager em = getEntityManager();
 
-
-       try {
-           Person person = em.find(Person.class, id);
-           if (person == null) {
+        try {
+            Person person = em.find(Person.class, id);
+            if (person == null) {
                 throw new PersonNotFoundException(String.format("Person with id: (%d) not found.", id));
             } else {
                 return new PersonDTO(person);
-           }
-       } finally {
-           em.close();
-       }
+            }
+        } finally {
+            em.close();
+        }
     }
 
     @Override
@@ -222,8 +222,8 @@ public class PersonFacade implements IPersonFacade {
         }
 
         //
-        Hobby hob1 = new Hobby("hobbynameONE", "linkONE", "categoryONE", "typeONE");
-        Hobby hob2 = new Hobby("hobbynameTWO", "linkTWO", "categoryTWO", "typeTWO");
+        Hobby hob1 = new Hobby("1hobbynameONE", "linkONE", "categoryONE", "typeONE");
+        Hobby hob2 = new Hobby("1hobbynameTWO", "linkTWO", "categoryTWO", "typeTWO");
 
         person1.addHobby(hob1);
         person1.addHobby(hob2);
@@ -231,20 +231,38 @@ public class PersonFacade implements IPersonFacade {
 
         System.out.println(person1.getHobbies().get(0).getName());
         System.out.println(person2.getHobbies().get(0).getName());
-
-        try {
-            em.getTransaction().begin();
-            
-//            Query query = em.createQuery("SELECT a FROM Phone a WHERE a.person_id = :id");
-//            query.setParameter("id", person1.getId());
-            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-            em.persist(person1);
-            em.persist(person2);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
+        
+        Query query = em.createQuery("SELECT h from Hobby h WHERE h.name = :name");
+        query.setParameter("name", "1hobbynameONE");
+        List<Hobby> result = query.getResultList();
+        
+        for (Hobby ps: result) {
+            System.out.println("Navn: " + ps.getName()+ ", " + ps.getCategory()+ ", " + ps.getType());
         }
+        
+        Query q1 = em.createQuery(
+                "SELECT p " +
+                        "FROM Person p " +
+                        "JOIN Hobby phobby " +
+                        "ON p.id = phobby.persons_ID " +
+                        "JOIN Hobby hobby " +
+                        "ON hobby.name = phobby.hobbies_NAME " +
+                        "WHERE Hobby.name = :name");
+        q1.setParameter("name", "1hobbynameONE");
+        System.out.println(new PersonsDTO(q1.getResultList()));
+//        try {
+//            em.getTransaction().begin();
+//
+////            Query query = em.createQuery("SELECT a FROM Phone a WHERE a.person_id = :id");
+////            query.setParameter("id", person1.getId());
+//            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+//            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+//            em.persist(person1);
+//            em.persist(person2);
+//            em.getTransaction().commit();
+//        } finally {
+//            em.close();
+//        }
     }
 
     @Override
@@ -256,11 +274,23 @@ public class PersonFacade implements IPersonFacade {
             em.close();
         }
     }
-    
+
     public CityInfosDTO getAllZip() {
         EntityManager em = emf.createEntityManager();
         try {
             return new CityInfosDTO(em.createNamedQuery("CityInfo.getAll").getResultList());
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public PersonDTO getPersonByHobby(String hobby) {
+        EntityManager em = getEntityManager();
+
+        try {
+            Person person = em.find(Person.class, hobby);
+                return new PersonDTO(person);
         } finally {
             em.close();
         }

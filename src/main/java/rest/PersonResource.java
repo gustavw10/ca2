@@ -54,11 +54,5 @@ public class PersonResource {
         return GSON.toJson(FACADE.getPerson(id));
     }
     
-    @GET
-    @Path("allzip")
-    @Produces({MediaType.APPLICATION_JSON})
-    public String getAllZipCodes() {
-       CityInfosDTO cities = FACADE.getAllZip();
-       return GSON.toJson(cities);
-    }
+
 }

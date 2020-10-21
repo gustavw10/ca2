@@ -8,19 +8,23 @@ package entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author Gustav
  */
 @Entity
+@NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE from Hobby")
 public class Hobby implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,8 +32,8 @@ public class Hobby implements Serializable {
     @Column(length = 50)
     private String name;
     
-    @ManyToMany
-    @JoinColumn(name ="hobbies")
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JoinTable(name="PERSON_HOBBY")
     private List<Person> persons;
     
     private String wikiLink;
@@ -88,6 +92,8 @@ public class Hobby implements Serializable {
         this.type = type;
     }
     
-    
+    public void AddPerson(Person person){
+        persons.add(person);
+    }
     
 }

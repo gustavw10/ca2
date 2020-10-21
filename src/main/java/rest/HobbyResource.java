@@ -39,10 +39,10 @@ public class HobbyResource {
         return "{\"msg\":\"Hello World\"}";
     }
 
-    @GET
-    @Path("{hobby}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public String getByHobby(@PathParam("hobby") String hobby) {
-        return GSON.toJson(FACADE.getPersonByHobby(hobby));
-    }
+//    @GET
+//    @Path("{hobby}")
+//    @Produces({MediaType.APPLICATION_JSON})
+//    public String getByHobby(@PathParam("hobby") String hobby) {
+//        return GSON.toJson(FACADE.getPersonByHobby(hobby));
+//    }
 }
