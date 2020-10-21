@@ -31,7 +31,7 @@ public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
@@ -126,5 +126,11 @@ public class Person implements Serializable {
     public void setHobbies(List<Hobby> hobbies) {
         this.hobbies = hobbies;
     }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+    
+    
 
 }

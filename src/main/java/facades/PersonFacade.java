@@ -1,6 +1,7 @@
 package facades;
 
 import dto.PersonDTO;
+import dto.PersonsDTO;
 import entities.Address;
 import entities.CityInfo;
 import entities.Hobby;
@@ -12,6 +13,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 /**
  *
@@ -56,50 +58,92 @@ public class PersonFacade implements IPersonFacade {
     }
 
     @Override
-    public PersonDTO addPerson() throws MissingInputException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public PersonDTO addPerson(String firstName, String lastName, String email, String phone, String street, String zipCode, String city) throws MissingInputException {
+        if ((firstName.length() == 0 || lastName.length() == 0)) {
+            throw new MissingInputException("Missing first and/or lastname");
+        }
+        EntityManager em = getEntityManager();
+        Person person = new Person(firstName, lastName, email);
+        try {
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.zip = :zip AND a.city = :city");
+            query.setParameter("street", street);
+            query.setParameter("zip", zipCode);
+            query.setParameter("city", city);
+            List<Address> addresses = query.getResultList();
+            if (addresses.size() > 0) {
+                person.setAddress(addresses.get(0));
+            } else {
+                person.setAddress(new Address(street));
+            }
+            em.persist(person);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new PersonDTO(person);
     }
 
     @Override
     public PersonDTO deletePerson(int id) throws PersonNotFoundException {
-          EntityManager em = getEntityManager();
-          Person person = em.find(Person.class, id);
-          if (person == null) {
+        EntityManager em = getEntityManager();
+        Person person = em.find(Person.class, id);
+        if (person == null) {
             throw new PersonNotFoundException(String.format("Person with id: (%d) not found", id));
-          } else {
-                try {
-                    em.getTransaction().begin();
-                        em.remove(person);
-                    em.getTransaction().commit();
-                } finally {
-                    em.close();
+        } else {
+            try {
+                em.getTransaction().begin();
+                em.remove(person);
+                em.getTransaction().commit();
+            } finally {
+                em.close();
             }
             return new PersonDTO(person);
-          }
+        }
     }
 
     @Override
     public PersonDTO getPerson(int id) throws PersonNotFoundException {
         EntityManager em = getEntityManager();
-       
-           
-       try {
-           Person person = em.find(Person.class, id);
-           if (person == null) {
+
+        try {
+            Person person = em.find(Person.class, id);
+            if (person == null) {
                 throw new PersonNotFoundException(String.format("Person with id: (%d) not found.", id));
             } else {
                 return new PersonDTO(person);
-           }
-       } finally {
-           em.close();
-       }
+            }
+        } finally {
+            em.close();
+        }
     }
-       
+
     @Override
     public PersonDTO editPerson(PersonDTO p) throws PersonNotFoundException, MissingInputException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if ((p.getFirstName().length() == 0 || p.getLastName().length() == 0)) {
+            throw new MissingInputException("Missing first and/or lastname");
+        }
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            Person person = em.find(Person.class, p.getId());
+            if (person == null) {
+                throw new PersonNotFoundException(String.format("Person with id: %d not found", p.getId()));
+            } else {
+
+                person.setFirstName(p.getFirstName());
+                person.setLastName(p.getLastName());
+                person.setEmail(p.getEmail());
+            }
+
+            em.getTransaction().commit();
+            return new PersonDTO(person);
+        } finally {
+            em.close();
+        }
     }
-    
+
     @Override
     public long getPersonCount() {
         EntityManager em = emf.createEntityManager();
@@ -124,7 +168,7 @@ public class PersonFacade implements IPersonFacade {
 
     @Override
     public long getPhonesCount() {
-       EntityManager em = emf.createEntityManager();
+        EntityManager em = emf.createEntityManager();
         try {
             long renameMeCount = (long) em.createQuery("SELECT COUNT(r) FROM Phone r").getSingleResult();
             return renameMeCount;
@@ -132,8 +176,7 @@ public class PersonFacade implements IPersonFacade {
             em.close();
         }
     }
- 
-    
+
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
         EntityManager em = emf.createEntityManager();
@@ -180,13 +223,22 @@ public class PersonFacade implements IPersonFacade {
         System.out.println(person1.getHobbies().get(0).getName());
         System.out.println(person2.getHobbies().get(0).getName());
 
-
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.persist(person1);
             em.persist(person2);
             em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public PersonsDTO getAllPersons() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return new PersonsDTO(em.createNamedQuery("Person.getAll").getResultList());
         } finally {
             em.close();
         }

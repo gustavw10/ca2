@@ -4,6 +4,7 @@ import entities.Person;
 
 public class PersonDTO {
 
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
@@ -46,5 +47,11 @@ public class PersonDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Long getId() {
+        return id;
+    }
+    
+    
 
 }

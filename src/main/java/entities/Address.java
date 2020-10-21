@@ -26,7 +26,7 @@ public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String street;
     
@@ -42,6 +42,12 @@ public class Address implements Serializable {
     }
     
     public Address(){
+    }
+
+    public Address(String street, CityInfo cityinfo, List<Person> persons) {
+        this.street = street;
+        this.cityinfo = cityinfo;
+        this.persons = persons;
     }
     
     public void setCityInfo(CityInfo info) {
@@ -75,6 +81,18 @@ public class Address implements Serializable {
 
     public List<Person> getPersons() {
         return persons;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public void setCityinfo(CityInfo cityinfo) {
+        this.cityinfo = cityinfo;
+    }
+
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
     }
     
     
