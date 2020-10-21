@@ -94,11 +94,45 @@ public class PersonFacade implements IPersonFacade {
            em.close();
        }
     }
-
+       
     @Override
     public PersonDTO editPerson(PersonDTO p) throws PersonNotFoundException, MissingInputException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    @Override
+    public long getPersonCount() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            long renameMeCount = (long) em.createQuery("SELECT COUNT(r) FROM Person r").getSingleResult();
+            return renameMeCount;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public long getAddressesCount() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            long renameMeCount = (long) em.createQuery("SELECT COUNT(r) FROM Address r").getSingleResult();
+            return renameMeCount;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public long getPhonesCount() {
+       EntityManager em = emf.createEntityManager();
+        try {
+            long renameMeCount = (long) em.createQuery("SELECT COUNT(r) FROM Phone r").getSingleResult();
+            return renameMeCount;
+        } finally {
+            em.close();
+        }
+    }
+ 
     
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");

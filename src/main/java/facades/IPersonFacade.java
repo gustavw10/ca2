@@ -21,4 +21,10 @@ public interface IPersonFacade {
     public PersonDTO editPerson(
             PersonDTO p)
             throws PersonNotFoundException, MissingInputException;
+    
+    public long getPersonCount();
+    
+    public long getAddressesCount();
+    
+    public long getPhonesCount();
 }
