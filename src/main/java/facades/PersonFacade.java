@@ -88,11 +88,17 @@ public class PersonFacade implements IPersonFacade {
     public PersonDTO deletePerson(int id) throws PersonNotFoundException {
         EntityManager em = getEntityManager();
         Person person = em.find(Person.class, id);
+        
         if (person == null) {
             throw new PersonNotFoundException(String.format("Person with id: (%d) not found", id));
         } else {
             try {
+                List<Phone> phones = person.getPhones();
+                
                 em.getTransaction().begin();
+                for(int i = 0; i < phones.size(); i++){
+                    em.remove(phones.get(i));
+                }
                 em.remove(person);
                 em.getTransaction().commit();
             } finally {
@@ -225,6 +231,10 @@ public class PersonFacade implements IPersonFacade {
 
         try {
             em.getTransaction().begin();
+            
+//            Query query = em.createQuery("SELECT a FROM Phone a WHERE a.person_id = :id");
+//            query.setParameter("id", person1.getId());
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.persist(person1);
             em.persist(person2);
