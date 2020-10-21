@@ -62,12 +62,37 @@ public class PersonFacade implements IPersonFacade {
 
     @Override
     public PersonDTO deletePerson(int id) throws PersonNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+          EntityManager em = getEntityManager();
+          Person person = em.find(Person.class, id);
+          if (person == null) {
+            throw new PersonNotFoundException(String.format("Person with id: (%d) not found", id));
+          } else {
+                try {
+                    em.getTransaction().begin();
+                        em.remove(person);
+                    em.getTransaction().commit();
+                } finally {
+                    em.close();
+            }
+            return new PersonDTO(person);
+          }
     }
 
     @Override
     public PersonDTO getPerson(int id) throws PersonNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = getEntityManager();
+       
+           
+       try {
+           Person person = em.find(Person.class, id);
+           if (person == null) {
+                throw new PersonNotFoundException(String.format("Person with id: (%d) not found.", id));
+            } else {
+                return new PersonDTO(person);
+           }
+       } finally {
+           em.close();
+       }
     }
 
     @Override
