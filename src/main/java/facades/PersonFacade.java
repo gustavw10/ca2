@@ -1,5 +1,7 @@
 package facades;
 
+import dto.CityInfoDTO;
+import dto.CityInfosDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
 import entities.Address;
@@ -85,7 +87,7 @@ public class PersonFacade implements IPersonFacade {
     }
 
     @Override
-    public PersonDTO deletePerson(int id) throws PersonNotFoundException {
+    public PersonDTO deletePerson(long id) throws PersonNotFoundException {
         EntityManager em = getEntityManager();
         Person person = em.find(Person.class, id);
         
@@ -108,20 +110,21 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
-    @Override
-    public PersonDTO getPerson(int id) throws PersonNotFoundException {
-        EntityManager em = getEntityManager();
+@Override
+    public PersonDTO getPerson(long id) throws PersonNotFoundException {
+       EntityManager em = getEntityManager();
 
-        try {
-            Person person = em.find(Person.class, id);
-            if (person == null) {
+
+       try {
+           Person person = em.find(Person.class, id);
+           if (person == null) {
                 throw new PersonNotFoundException(String.format("Person with id: (%d) not found.", id));
             } else {
                 return new PersonDTO(person);
-            }
-        } finally {
-            em.close();
-        }
+           }
+       } finally {
+           em.close();
+       }
     }
 
     @Override
@@ -249,6 +252,15 @@ public class PersonFacade implements IPersonFacade {
         EntityManager em = emf.createEntityManager();
         try {
             return new PersonsDTO(em.createNamedQuery("Person.getAll").getResultList());
+        } finally {
+            em.close();
+        }
+    }
+    
+    public CityInfosDTO getAllZip() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return new CityInfosDTO(em.createNamedQuery("CityInfo.getAll").getResultList());
         } finally {
             em.close();
         }

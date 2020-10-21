@@ -18,11 +18,11 @@ public interface IPersonFacade {
             throws MissingInputException;
 
     public PersonDTO deletePerson(
-            int id)
+            long id)
             throws PersonNotFoundException;
 
     public PersonDTO getPerson(
-            int id)
+            long id)
             throws PersonNotFoundException;
 
     public PersonDTO editPerson(

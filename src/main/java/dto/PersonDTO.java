@@ -13,6 +13,7 @@ public class PersonDTO {
         this.firstName = p.getFirstName();
         this.lastName = p.getLastName();
         this.email = p.getEmail();
+        this.id = p.getId();
     }
 
     public PersonDTO() {
