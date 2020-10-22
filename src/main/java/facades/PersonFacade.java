@@ -194,7 +194,20 @@ public class PersonFacade implements IPersonFacade {
         } finally {
             em.close();
         }
+    } 
+    
+    @Override
+    public List<PersonDTO> getHobbyPersonCount(String hobby) {
+        EntityManager em = emf.createEntityManager();
+        try {
+           List<PersonDTO> hobbyPersonCount = (List<PersonDTO>) em.createQuery("SELECT COUNT(p) FROM Person p INNER JOIN p.hobbies h WHERE h.name'" + hobby + "'", PersonDTO.class).getResultList();
+            return hobbyPersonCount;
+        } finally {
+            em.close();       
+        }
+       //SELECT p FROM Person p INNER JOIN p.hobbies h WHERE h.name='
     }
+    
 
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
@@ -268,8 +281,8 @@ public class PersonFacade implements IPersonFacade {
 
 //            Query query = em.createQuery("SELECT a FROM Phone a WHERE a.person_id = :id");
 //            query.setParameter("id", person1.getId());
-            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+           // em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+           // em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.persist(person1);
             em.persist(person2);
             em.getTransaction().commit();

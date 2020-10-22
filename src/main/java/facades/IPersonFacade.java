@@ -29,6 +29,8 @@ public interface IPersonFacade {
     public long getAddressesCount();
 
     public long getPhonesCount();
+    
+    public List<PersonDTO> getHobbyPersonCount(String hobby);
 
     public PersonsDTO getAllPersons();
     

@@ -8,6 +8,9 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.PersonDTO;
+
+import exceptions.PersonNotFoundException;
+
 import facades.PersonFacade;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
@@ -41,6 +44,7 @@ public class HobbyResource {
         return "{\"msg\":\"Hello World\"}";
     }
 
+
     @GET
     @Path("{hobby}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -48,4 +52,22 @@ public class HobbyResource {
         List<PersonDTO> p = FACADE.getAllByHobby(hobby);
         return GSON.toJson(p);
     }
+
+//    @GET
+//    @Path("{hobby}")
+//    @Produces({MediaType.APPLICATION_JSON})
+//    public String getByHobby(@PathParam("hobby") String hobby) {
+//        return GSON.toJson(FACADE.getPersonByHobby(hobby));
+//    }
+    
+    @Path("count/{hobby}")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getHobbyPersonCount(@PathParam("hobby") String hobby) throws PersonNotFoundException {
+        List<PersonDTO> list = FACADE.getAllByHobby(hobby);
+        int count = list.size();
+        return "{\"count\":" + count + "}";
+    }
+    
+
 }
