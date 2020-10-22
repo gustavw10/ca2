@@ -2,6 +2,7 @@ package dto;
 
 import entities.Person;
 import entities.Phone;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonDTO {
@@ -91,6 +92,11 @@ public class PersonDTO {
         this.phones = phones;
     }
     
-    
-
+    public List<PersonDTO>toDTO(List<Person>persons){
+        List<PersonDTO>dtoes = new ArrayList();
+            for(Person p: persons){
+                dtoes.add(new PersonDTO(p));
+            }
+            return dtoes;
+    }
 }

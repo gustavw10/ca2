@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -23,8 +24,8 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({
-@NamedQuery(name = "CityInfo.getAll", query = "SELECT c from CityInfo c"),
-@NamedQuery(name = "CityInfo.deleteAllRows", query = "DELETE from CityInfo")}) 
+    @NamedQuery(name = "CityInfo.getAll", query = "SELECT c from CityInfo c"),
+    @NamedQuery(name = "CityInfo.deleteAllRows", query = "DELETE from CityInfo")})
 public class CityInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -33,10 +34,10 @@ public class CityInfo implements Serializable {
     private String zipCode;
     @Column(length = 35)
     private String city;
-    
-    @OneToMany(mappedBy="cityinfo")
+
+    @OneToMany(mappedBy = "cityinfo")
+    @JoinTable(name = "PERSON_CITYINFO")
     private List<Address> addresses;
-    
 
     public CityInfo(String zipCode, String city) {
         this.zipCode = zipCode;
@@ -46,9 +47,9 @@ public class CityInfo implements Serializable {
 
     public CityInfo() {
     }
-    
+
     public void addAddress(Address address) {
-        if (address != null){
+        if (address != null) {
             addresses.add(address);
         }
     }
@@ -69,5 +70,4 @@ public class CityInfo implements Serializable {
         return addresses;
     }
 
-    
 }

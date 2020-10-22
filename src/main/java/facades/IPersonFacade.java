@@ -1,9 +1,11 @@
 package facades;
 
+import dto.CityInfosDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
 import exceptions.MissingInputException;
 import exceptions.PersonNotFoundException;
+import java.util.List;
 
 public interface IPersonFacade {
 
@@ -30,5 +32,7 @@ public interface IPersonFacade {
 
     public PersonsDTO getAllPersons();
     
-    public PersonDTO getPersonByHobby (String hobby);
+    public CityInfosDTO getAllZip();
+    
+    public List<PersonDTO> getAllByHobby(String hobby);
 }

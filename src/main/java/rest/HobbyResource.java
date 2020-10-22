@@ -7,7 +7,9 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.PersonDTO;
 import facades.PersonFacade;
+import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -39,10 +41,11 @@ public class HobbyResource {
         return "{\"msg\":\"Hello World\"}";
     }
 
-//    @GET
-//    @Path("{hobby}")
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public String getByHobby(@PathParam("hobby") String hobby) {
-//        return GSON.toJson(FACADE.getPersonByHobby(hobby));
-//    }
+    @GET
+    @Path("{hobby}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getByHobby(@PathParam("hobby") String hobby) {
+        List<PersonDTO> p = FACADE.getAllByHobby(hobby);
+        return GSON.toJson(p);
+    }
 }

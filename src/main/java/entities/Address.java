@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -33,6 +34,7 @@ public class Address implements Serializable {
     private String street;
     
     @ManyToOne(cascade = { CascadeType.PERSIST })
+    @JoinTable(name = "PERSON_CITYINFO")
     private CityInfo cityinfo;
     
     @OneToMany(mappedBy="address")
