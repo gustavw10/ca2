@@ -61,24 +61,32 @@ public class PersonFacade implements IPersonFacade {
     }
 
     @Override
-    public PersonDTO addPerson(String firstName, String lastName, String email, String phone, String street, String zipCode, String city) throws MissingInputException {
-        if ((firstName.length() == 0 || lastName.length() == 0)) {
+    public PersonDTO addPerson(PersonDTO p) throws MissingInputException {
+        //String firstName, String lastName, String email, String phone, String street, String zipCode, String city
+        if ((p.getFirstName().length() == 0 || p.getLastName().length() == 0)) {
             throw new MissingInputException("Missing first and/or lastname");
         }
         EntityManager em = getEntityManager();
-        Person person = new Person(firstName, lastName, email);
+        Person person = new Person(p.getFirstName(), p.getLastName(), p.getEmail());
+        Address address = new Address(p.getStreet());
+        person.setPhones(p.getPhones()); //DEN HER MANGLER
         try {
-            em.getTransaction().begin();
-            Query query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.zip = :zip AND a.city = :city");
-            query.setParameter("street", street);
-            query.setParameter("zip", zipCode);
-            query.setParameter("city", city);
-            List<Address> addresses = query.getResultList();
-            if (addresses.size() > 0) {
-                person.setAddress(addresses.get(0));
-            } else {
-                person.setAddress(new Address(street));
-            }
+              CityInfo city = em.find(CityInfo.class, p.getZip());
+              if(city != null){
+                  address.setCityInfo(city);
+                  person.setAddress(address);
+              }
+//            em.getTransaction().begin();
+//            Query query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.zip = :zip AND a.city = :city");
+//            query.setParameter("street", street);
+//            query.setParameter("zip", zipCode);
+//            query.setParameter("city", city);
+//            List<Address> addresses = query.getResultList();
+//            if (addresses.size() > 0) {
+//                person.setAddress(addresses.get(0));
+//            } else {
+//                person.setAddress(new Address(street));
+//            }
             em.persist(person);
             em.getTransaction().commit();
         } finally {
@@ -240,16 +248,16 @@ public class PersonFacade implements IPersonFacade {
             System.out.println("Navn: " + ps.getName()+ ", " + ps.getCategory()+ ", " + ps.getType());
         }
         
-        Query q1 = em.createQuery(
-                "SELECT p " +
-                        "FROM Person p " +
-                        "JOIN Hobby phobby " +
-                        "ON p.id = phobby.persons_ID " +
-                        "JOIN Hobby hobby " +
-                        "ON hobby.name = phobby.hobbies_NAME " +
-                        "WHERE Hobby.name = :name");
-        q1.setParameter("name", "1hobbynameONE");
-        System.out.println(new PersonsDTO(q1.getResultList()));
+//        Query q1 = em.createQuery(
+//                "SELECT p " +
+//                        "FROM Person p " +
+//                        "JOIN Hobby phobby " +
+//                        "ON p.id = phobby.persons_ID " +
+//                        "JOIN Hobby hobby " +
+//                        "ON hobby.name = phobby.hobbies_NAME " +
+//                        "WHERE Hobby.name = :name");
+//        q1.setParameter("name", "1hobbynameONE");
+//        System.out.println(new PersonsDTO(q1.getResultList()));
 //        try {
 //            em.getTransaction().begin();
 //

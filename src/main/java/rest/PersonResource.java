@@ -5,11 +5,14 @@ import com.google.gson.GsonBuilder;
 import dto.CityInfosDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
+import exceptions.MissingInputException;
 import exceptions.PersonNotFoundException;
 import utils.EMF_Creator;
 import facades.PersonFacade;
 import javax.persistence.EntityManagerFactory;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -54,5 +57,13 @@ public class PersonResource {
         return GSON.toJson(FACADE.getPerson(id));
     }
     
+     @POST
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public String addPerson(String person) throws MissingInputException  {
+        PersonDTO pers = GSON.fromJson(person, PersonDTO.class);
+        PersonDTO returnPerson = FACADE.addPerson(pers);
+        return GSON.toJson(returnPerson);
+    }
 
 }

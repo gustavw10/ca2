@@ -1,6 +1,8 @@
 package dto;
 
 import entities.Person;
+import entities.Phone;
+import java.util.List;
 
 public class PersonDTO {
 
@@ -8,6 +10,10 @@ public class PersonDTO {
     private String firstName;
     private String lastName;
     private String email;
+    private String street;
+    private String city;
+    private String zip;
+    private List<Phone> phones;
 
     public PersonDTO(Person p) {
         this.firstName = p.getFirstName();
@@ -51,6 +57,38 @@ public class PersonDTO {
 
     public Long getId() {
         return id;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
     }
     
     
