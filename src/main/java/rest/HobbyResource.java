@@ -63,7 +63,7 @@ public class HobbyResource {
     @Path("count/{hobby}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getHobbyPersonCount(@PathParam("hobby") String hobby) throws PersonNotFoundException {
+    public String getHobbyPersonCount(@PathParam("hobby") String hobby) {
         List<PersonDTO> list = FACADE.getAllByHobby(hobby);
         int count = list.size();
         return "{\"count\":" + count + "}";
