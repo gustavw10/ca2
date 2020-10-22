@@ -30,7 +30,7 @@ public interface IPersonFacade {
 
     public long getPhonesCount();
     
-    public List<PersonDTO> getHobbyPersonCount(String hobby);
+
 
     public PersonsDTO getAllPersons();
     

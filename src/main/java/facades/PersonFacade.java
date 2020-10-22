@@ -196,17 +196,7 @@ public class PersonFacade implements IPersonFacade {
         }
     } 
     
-    @Override
-    public List<PersonDTO> getHobbyPersonCount(String hobby) {
-        EntityManager em = emf.createEntityManager();
-        try {
-           List<PersonDTO> hobbyPersonCount = (List<PersonDTO>) em.createQuery("SELECT COUNT(p) FROM Person p INNER JOIN p.hobbies h WHERE h.name'" + hobby + "'", PersonDTO.class).getResultList();
-            return hobbyPersonCount;
-        } finally {
-            em.close();       
-        }
-       //SELECT p FROM Person p INNER JOIN p.hobbies h WHERE h.name='
-    }
+
     
 
     public static void main(String[] args) {
