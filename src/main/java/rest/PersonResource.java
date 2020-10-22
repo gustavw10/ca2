@@ -13,6 +13,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -63,8 +64,33 @@ public class PersonResource {
     @Consumes({MediaType.APPLICATION_JSON})
     public String addPerson(String person) throws MissingInputException  {
         PersonDTO pers = GSON.fromJson(person, PersonDTO.class);
+        System.out.println(pers.getFirstName());
         PersonDTO returnPerson = FACADE.addPerson(pers);
         return GSON.toJson(returnPerson);
     }
-
+    
+    @PUT
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public String updatePerson(@PathParam("id") long id,  String person) throws Exception {
+        PersonDTO pDTO = GSON.fromJson(person, PersonDTO.class);
+        PersonDTO pNew = FACADE.updatePerson(pDTO);
+        return GSON.toJson(pNew);
+    }
+    
+    public static void main(String[] args) throws MissingInputException {
+        PersonResource res = new PersonResource();
+        res.addPerson("{\n" +
+"   \n" +
+"     \"firstName\": \"Eko4n\",\n" +
+"      \"lastName\": \"Eko4name\",\n" +
+"      \"phone\": \"700\",\n" +
+"      \"email\": \"ekoEEEEENTEST@email.com\",\n" +
+"      \"street\": \"ekotest\",\n" +
+"      \"zip\": \"900\",\n" +
+"      \"city\": \"ekocity\"\n" +
+"}");
+    }
+ 
 }

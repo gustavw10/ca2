@@ -20,7 +20,7 @@ public interface IPersonFacade {
             long id)
             throws PersonNotFoundException;
 
-    public PersonDTO editPerson(
+    public PersonDTO updatePerson(
             PersonDTO p)
             throws PersonNotFoundException, MissingInputException;
 
