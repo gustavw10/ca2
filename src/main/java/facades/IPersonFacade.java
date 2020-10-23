@@ -35,7 +35,5 @@ public interface IPersonFacade {
 
     public PersonsDTO getAllPersons();
     
-    public CityInfosDTO getAllZip();
-    
     public List<PersonDTO> getAllByHobby(String hobby);
 }

@@ -32,8 +32,8 @@ public class CityInfoResource {
     @Path("all")
     @Produces({MediaType.APPLICATION_JSON})
     public String getAllZipCodes() {
-        CityInfosDTO cities = FACADE.getAllZip();
-        return GSON.toJson(cities);
+       List<String> cities = FACADE.getAllZip();
+       return GSON.toJson(cities);
     }
 
     @GET

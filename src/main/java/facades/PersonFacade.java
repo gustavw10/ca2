@@ -327,14 +327,11 @@ public class PersonFacade implements IPersonFacade {
     }
 
     
-    @Override
-    public CityInfosDTO getAllZip() {
+    public List<String> getAllZip() {
         EntityManager em = emf.createEntityManager();
-        try {
-            return new CityInfosDTO(em.createNamedQuery("CityInfo.getAll").getResultList());
-        } finally {
-            em.close();
-        }
+        TypedQuery getZips = em.createQuery("SELECT z.zipCode, z.city FROM CityInfo z", CityInfo.class);
+        List<String> zipCodes = getZips.getResultList();
+            return zipCodes;
     }
     
     public List<PersonDTO> getAllByZip(String zipCode) {
