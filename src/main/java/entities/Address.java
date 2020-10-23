@@ -34,7 +34,6 @@ public class Address implements Serializable {
     private String street;
     
     @ManyToOne(cascade = { CascadeType.PERSIST })
-    @JoinTable(name = "PERSON_CITYINFO")
     private CityInfo cityinfo;
     
     @OneToMany(mappedBy="address")

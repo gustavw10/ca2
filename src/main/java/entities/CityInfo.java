@@ -36,7 +36,6 @@ public class CityInfo implements Serializable {
     private String city;
 
     @OneToMany(mappedBy = "cityinfo")
-    @JoinTable(name = "PERSON_CITYINFO")
     private List<Address> addresses;
 
     public CityInfo(String zipCode, String city) {

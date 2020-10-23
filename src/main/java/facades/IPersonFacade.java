@@ -32,7 +32,6 @@ public interface IPersonFacade {
     public long getPhonesCount();
     
 
-
     public PersonsDTO getAllPersons();
     
     public List<PersonDTO> getAllByHobby(String hobby);

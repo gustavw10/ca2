@@ -14,7 +14,7 @@ public class PersonDTO {
     private String street;
     private String city;
     private String zip;
-    private List<Phone> phones;
+    private String phone;
 
     public PersonDTO(Person p) {
         this.firstName = p.getFirstName();
@@ -84,12 +84,12 @@ public class PersonDTO {
         this.zip = zip;
     }
 
-    public List<Phone> getPhones() {
-        return phones;
+    public String getPhones() {
+        return phone;
     }
 
-    public void setPhones(List<Phone> phones) {
-        this.phones = phones;
+    public void setPhones(String phones) {
+        this.phone = phones;
     }
     
     public List<PersonDTO>toDTO(List<Person>persons){
@@ -98,6 +98,10 @@ public class PersonDTO {
                 dtoes.add(new PersonDTO(p));
             }
             return dtoes;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
     
 }

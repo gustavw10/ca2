@@ -5,12 +5,14 @@ import com.google.gson.GsonBuilder;
 import dto.CityInfosDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
+import dto.PhoneDTO;
 import exceptions.MissingInputException;
 import exceptions.PersonNotFoundException;
 import utils.EMF_Creator;
 import facades.PersonFacade;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -64,7 +66,7 @@ public class PersonResource {
     @Consumes({MediaType.APPLICATION_JSON})
     public String addPerson(String person) throws MissingInputException  {
         PersonDTO pers = GSON.fromJson(person, PersonDTO.class);
-        System.out.println(pers.getFirstName());
+        System.out.println("----" + pers.getPhones());
         PersonDTO returnPerson = FACADE.addPerson(pers);
         return GSON.toJson(returnPerson);
     }
@@ -75,22 +77,45 @@ public class PersonResource {
     @Consumes({MediaType.APPLICATION_JSON})
     public String updatePerson(@PathParam("id") long id,  String person) throws Exception {
         PersonDTO pDTO = GSON.fromJson(person, PersonDTO.class);
+        pDTO.setId(id);
         PersonDTO pNew = FACADE.updatePerson(pDTO);
         return GSON.toJson(pNew);
     }
     
-    public static void main(String[] args) throws MissingInputException {
+    @DELETE
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String deletePerson(@PathParam("id") long id) throws PersonNotFoundException {
+        PersonDTO pDeleted = FACADE.deletePerson(id);
+        return GSON.toJson(pDeleted);
+    }
+    
+    public static void main(String[] args) throws MissingInputException, Exception {
         PersonResource res = new PersonResource();
         res.addPerson("{\n" +
 "   \n" +
-"     \"firstName\": \"Eko4n\",\n" +
+"     \"firstName\": \"Ekeee4n\",\n" +
 "      \"lastName\": \"Eko4name\",\n" +
-"      \"phone\": \"700\",\n" +
+"      \"phone\": \"3500, 200003\",\n" +
 "      \"email\": \"ekoEEEEENTEST@email.com\",\n" +
-"      \"street\": \"ekotest\",\n" +
-"      \"zip\": \"900\",\n" +
+"      \"street\": \"addr\",\n" +
+"      \"zip\": \"2970\",\n" +
 "      \"city\": \"ekocity\"\n" +
 "}");
+//        
+//        res.updatePerson(4, "{\n" +
+//"   \n" +
+//"     \"firstName\": \"A TEST WITH POSTMAN\",\n" +
+//"      \"lastName\": \"Eko4name\",\n" +
+//"      \"phone\": \"900\",\n" +
+//"      \"email\": \"ekoEEEEENTEST@email.com\",\n" +
+//"      \"street\": \"I AM TEST WITH POSTMAN\",\n" +
+//"      \"zip\": \"900\",\n" +
+//"      \"city\": \"ekocity\"\n" +
+//"}");
+        
+//        res.deletePerson(3);
+        
     }
  
 }

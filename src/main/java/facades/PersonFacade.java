@@ -61,40 +61,40 @@ public class PersonFacade implements IPersonFacade {
         }
 
     }
-
+    
     @Override
     public PersonDTO addPerson(PersonDTO p) throws MissingInputException {
-        //String firstName, String lastName, String email, String phone, String street, String zipCode, String city
-        System.out.println(p.getFirstName());
         if ((p.getFirstName().length() == 0 || p.getLastName().length() == 0)) {
             throw new MissingInputException("Missing first and/or lastname");
         }
+        
         EntityManager em = getEntityManager();
         Person person = new Person(p.getFirstName(), p.getLastName(), p.getEmail());
-        Address address = new Address(p.getStreet());
-        person.setPhones(p.getPhones()); //DEN HER MANGLER
+        
         try {
-              CityInfo city = em.find(CityInfo.class, p.getZip());
+            em.getTransaction().begin();
+            
+            String[] listOfPhones = p.getPhones().split(",");
+            for(int i = 0; i < listOfPhones.length; i++){
+                Phone ph = new Phone(listOfPhones[i].trim());
+                ph.setPerson(person);
+            }
+            
+            Query query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.cityinfo.zipCode = :CITYINFO_ZIPCODE");
+            query.setParameter("street", p.getStreet());
+            query.setParameter("CITYINFO_ZIPCODE", p.getZip());
+            List<Address> addresses = query.getResultList();
+            
+            if (addresses.size() > 0) {
+                person.setAddress(addresses.get(0));
+            } else {
+                Address address = new Address(p.getStreet());
+                CityInfo city = em.find(CityInfo.class, p.getZip());
               if(city != null){
                   address.setCityInfo(city);
-                  System.out.println(address.getCityinfo().getZipCode());
-//                  System.out.println(address.getCityinfo().getCity());
-                  person.setAddress(address);
-                  
-                  System.out.println("----" + person.getAddress().getCityinfo().getZipCode());
-//                  System.out.println("--------" + person.getAddress().getCityinfo().getZipCode());
                 }
-            em.getTransaction().begin();
-////            Query query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.zip = :zip AND a.city = :city");
-////            query.setParameter("street", street);
-////            query.setParameter("zip", zipCode);
-////            query.setParameter("city", city);
-////            List<Address> addresses = query.getResultList();
-////            if (addresses.size() > 0) {
-////                person.setAddress(addresses.get(0));
-////            } else {
-////                person.setAddress(new Address(street));
-////          }
+                person.setAddress(address);
+          }
             em.persist(person);
             em.getTransaction().commit();
         } finally {
@@ -123,6 +123,11 @@ public class PersonFacade implements IPersonFacade {
                 person.getAddress().setStreet(p.getStreet());
                 person.getAddress().getCityinfo().setCity(p.getCity());
                 person.getAddress().getCityinfo().setZipCode(p.getZip());
+                String[] listOfPhones = p.getPhones().split(",");
+                for(int i = 0; i < listOfPhones.length; i++){
+                Phone ph = new Phone(listOfPhones[i].trim());
+                ph.setPerson(person);
+              }
             }
 
             em.getTransaction().commit();
@@ -137,7 +142,6 @@ public class PersonFacade implements IPersonFacade {
     public PersonDTO deletePerson(long id) throws PersonNotFoundException {
         EntityManager em = getEntityManager();
         Person person = em.find(Person.class, id);
-
         if (person == null) {
             throw new PersonNotFoundException(String.format("Person with id: (%d) not found", id));
         } else {
