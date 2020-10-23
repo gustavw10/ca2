@@ -122,8 +122,7 @@ public class PersonResourceTest {
     
     
 
-    
-   @Disabled 
+   @Disabled
    @Test
     public void testGetAll2() {
                 List<PersonDTO> personsDTOs;
@@ -147,23 +146,24 @@ public class PersonResourceTest {
         System.out.println("Testing is server UP");
         given().when().get("/person").then().statusCode(200);
     }
+    
     @Disabled
     @Test
-    public void testGetAll() {
+    public void testPersonGetAll() {
         given()
                 .contentType("application/json")
                 .get("/person/all")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("size()", is(2));
-//                .and()
-//                .body("firstName", hasItems("eko", "eko2"));
+                .body("size()", is(2))
+                .and()
+                .body("id", hasItems("1","2"));
                 
     }
     
     @Test
-    public void testCount() {
+    public void testPersonCount() {
         given()
         
         .contentType("application/json")
@@ -172,8 +172,18 @@ public class PersonResourceTest {
         .statusCode(HttpStatus.OK_200.getStatusCode())
         .body("count", equalTo(2)); 
     }
+    
+    @Test
+    public void testZipcodeCount() {
+        given()
+                .contentType("application/json")
+                .get("/cityinfo/count")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("count", equalTo(2)); // har kun 2 zipcodes i test db
+    }
  
-
     @Disabled
     @Test
     public void testGetPersonById() {
@@ -183,9 +193,26 @@ public class PersonResourceTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("firstName", equalTo(p2.getFirstName()))
+                .body("firstName", equalTo(p1.getFirstName()))
                 .and()
-                .body("lastName", equalTo(p2.getLastName()));
+                .body("lastName", equalTo(p1.getLastName()));
+                
+    }
+    @Disabled
+    @Test
+    public void testGetAllZip() {
+        given()
+                .contentType("application/json")
+                .get("/cityinfo/all")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("size()", is(1))
+                .and()
+                .body("zipCode", hasItems("zip", "zip2"));
+                
+
+               
     }
     
 }

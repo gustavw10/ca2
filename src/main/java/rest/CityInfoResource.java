@@ -14,35 +14,41 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import utils.EMF_Creator;
 
-
 @Path("cityinfo")
 public class CityInfoResource {
 
-
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-       
-    private static final PersonFacade FACADE =  PersonFacade.getPersonFacade(EMF);
+
+    private static final PersonFacade FACADE = PersonFacade.getPersonFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-            
+
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String demo() {
-        return "{\"msg\":\"Hello World - CityInfo\"}";       
+        return "{\"msg\":\"Hello World - CityInfo\"}";
     }
-    
+
     @GET
     @Path("all")
     @Produces({MediaType.APPLICATION_JSON})
     public String getAllZipCodes() {
-       CityInfosDTO cities = FACADE.getAllZip();
-       return GSON.toJson(cities);
+        CityInfosDTO cities = FACADE.getAllZip();
+        return GSON.toJson(cities);
     }
-    
+
     @GET
     @Path("{zipcode}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getByZip(@PathParam("zipcode") String zipcode){
+    public String getByZip(@PathParam("zipcode") String zipcode) {
         List<PersonDTO> p = FACADE.getAllByZip(zipcode);
         return GSON.toJson(p);
+    }
+
+    @GET
+    @Path("count")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getZipcodeCount() {
+        long count = FACADE.getZipcodesCount();
+        return "{\"count\":" + count + "}";
     }
 }

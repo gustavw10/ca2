@@ -7,6 +7,7 @@ import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import exceptions.PersonNotFoundException;
 import java.util.ArrayList;
 import javax.persistence.EntityManager;
 import utils.EMF_Creator;
@@ -104,30 +105,11 @@ public class PersonFacadeTest {
     public void testPersonCount() {
         assertEquals(2, facade.getPersonCount());
     }
-    @Disabled  
-    @Test
-    public void testAllPersons() {
+      
 
-//        PersonDTO p1DTO = new PersonDTO(p1);
-//        PersonDTO p2DTO = new PersonDTO(p2);
-//        PersonDTO p3DTO = new PersonDTO(p3);
-//        assertEquals(facade.getAllPersons(), containsInAnyOrder(p1DTO, p2DTO, p3DTO));
-        
-        
-        
-        
-        
-        
-//        ArrayList<Person> people = new ArrayList<>();
-//        people.add(p1);
-//        people.add(p2);
-//        people.add(p3);
-//        
-//        assertEquals(facade.getAllPersons(), Matchers.containsInAnyOrder(people));
-    }
     
     
-    
+   
     
 
 }

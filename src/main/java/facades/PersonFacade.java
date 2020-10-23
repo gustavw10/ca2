@@ -194,7 +194,17 @@ public class PersonFacade implements IPersonFacade {
             em.close();
         }
     }
-
+    
+        @Override
+    public long getZipcodesCount() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            long renameMeCount = (long) em.createQuery("SELECT COUNT(r) FROM CityInfo r").getSingleResult();
+            return renameMeCount;
+        } finally {
+            em.close();
+        }
+    }
     @Override
     public long getPhonesCount() {
         EntityManager em = emf.createEntityManager();

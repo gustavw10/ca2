@@ -28,6 +28,7 @@ public interface IPersonFacade {
 
     public long getAddressesCount();
 
+    public long getZipcodesCount();
     public long getPhonesCount();
     
 
