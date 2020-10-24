@@ -75,9 +75,13 @@ public class Person implements Serializable {
     }
     
     public void addHobby(Hobby hobby){
+        System.out.println("person hobby 1");
         if(hobby != null){
+            System.out.println("person hobby 2");
             this.hobbies.add(hobby);
+            System.out.println("3");
             hobby.getPersons().add(this);
+            System.out.println("4");
         }
     }
 

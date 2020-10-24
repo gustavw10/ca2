@@ -3,6 +3,7 @@ package facades;
 import dto.CityInfoDTO;
 import dto.CityInfosDTO;
 import dto.HobbyDTO;
+import dto.HobbyToPersonDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
 import entities.Address;
@@ -130,7 +131,7 @@ public class PersonFacade implements IPersonFacade {
                     em.remove(phones.get(i));
                   }
                 
-                Query query = em.createQuery("DELETE FROM Address WHERE person_id = :id");
+                Query query = em.createQuery("DELETE FROM Phone WHERE person_id = :id");
                 query.setParameter("id", p.getId());
                 query.executeUpdate();
                 
@@ -146,6 +147,36 @@ public class PersonFacade implements IPersonFacade {
         } finally {
             em.close();
         }
+    }
+    
+    @Override
+    public HobbyToPersonDTO addHobbyToPerson(String h, long id) throws MissingInputException, PersonNotFoundException{
+        if ((h == null)) {
+            throw new MissingInputException("Missing id for hobby or input");
+        }
+         EntityManager em = emf.createEntityManager();
+        try {
+            Person person = em.find(Person.class, id);
+            
+            if (h != null) {
+                String[] hSplit = h.split(",");
+                
+                for (int i = 0; i < hSplit.length; i++) {
+                    
+                    TypedQuery<Hobby> hobbyQuery = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :hobbyNames", Hobby.class);
+                    hobbyQuery.setParameter("hobbyNames", hSplit[i].trim().toLowerCase());
+                    Hobby hobby = hobbyQuery.getSingleResult();
+                    
+                    em.getTransaction().begin();
+                    person.addHobby(hobby);
+                    em.getTransaction().commit();
+                }
+            }
+            
+        } finally {
+            em.close();
+        }
+        return null;
     }
 
 

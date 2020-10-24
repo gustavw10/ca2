@@ -184,7 +184,8 @@ public class PersonResourceTest {
                 .statusCode(HttpStatus.OK_200.getStatusCode())
                 .body("count", equalTo(2)); // har kun 2 zipcodes i test db
     }
- 
+    
+    @Disabled
     @Test
     public void testGetPersonById() {
         given()

@@ -1,6 +1,7 @@
 package facades;
 
 import dto.CityInfosDTO;
+import dto.HobbyToPersonDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
 import exceptions.MissingInputException;
@@ -29,7 +30,11 @@ public interface IPersonFacade {
     public long getAddressesCount();
 
     public long getZipcodesCount();
+    
     public long getPhonesCount();
+    
+    public HobbyToPersonDTO addHobbyToPerson(String hobby, long id)
+            throws MissingInputException, PersonNotFoundException;
     
 
     public PersonsDTO getAllPersons();

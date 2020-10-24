@@ -3,6 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.CityInfosDTO;
+import dto.HobbyToPersonDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
 import dto.PhoneDTO;
@@ -66,7 +67,6 @@ public class PersonResource {
     @Consumes({MediaType.APPLICATION_JSON})
     public String addPerson(String person) throws MissingInputException  {
         PersonDTO pers = GSON.fromJson(person, PersonDTO.class);
-        System.out.println("----" + pers.getPhones());
         PersonDTO returnPerson = FACADE.addPerson(pers);
         return GSON.toJson(returnPerson);
     }
@@ -82,6 +82,19 @@ public class PersonResource {
         return GSON.toJson(pNew);
     }
     
+    @PUT
+    @Path("addHobby/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public String addHobby(@PathParam("id") long id,  String hobbydto) throws Exception {
+        
+        System.out.println(hobbydto);
+        //HobbyToPersonDTO pDTO = GSON.fromJson(hobbydto, HobbyToPersonDTO.class);
+        
+        HobbyToPersonDTO pNew = FACADE.addHobbyToPerson(hobbydto, id);
+        return GSON.toJson("");
+    }
+    
     @DELETE
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -92,28 +105,36 @@ public class PersonResource {
     
     public static void main(String[] args) throws MissingInputException, Exception {
         PersonResource res = new PersonResource();
-        res.addPerson("{\n" +
-"   \n" +
-"     \"firstName\": \"EKOCAMEN\",\n" +
-"      \"lastName\": \"Eko4name\",\n" +
-"      \"phone\": \"3500, 200003\",\n" +
-"      \"email\": \"ekoEEEEENTEST@email.com\",\n" +
-"      \"street\": \"addr\",\n" +
-"      \"zip\": \"2970\",\n" +
-"      \"city\": \"ekocity\"\n" +
-"}");
-        
-//        res.updatePerson(32, "{\n" +
+//        res.addPerson("{\n" +
 //"   \n" +
-//"     \"firstName\": \"A TEST WITH POSTMAN\",\n" +
+//"     \"firstName\": \"EKOCAMEN\",\n" +
+//"      \"lastName\": \"Eko4name\",\n" +
+//"      \"phone\": \"3500, 200003\",\n" +
+//"      \"email\": \"ekoEEEEENTEST@email.com\",\n" +
+//"      \"street\": \"addr\",\n" +
+//"      \"zip\": \"900\",\n" +
+//"      \"city\": \"ekocity\"\n" +
+//"}");
+        
+//        res.addHobby(3, "{\n" +
+//"   \n" +
+//     
+//"      \"hobbies\": \"Airsoft, Akrobatik\",\n" +
+//"}");
+
+            res.addHobby(15, "Animation");
+//        
+//        res.updatePerson(40, "{\n" +
+//"   \n" +
+//"     \"firstName\": \"once again\",\n" +
 //"      \"lastName\": \"Ekeadawo4name\",\n" +
-//"      \"phone\": \"702224\",\n" +
+//"      \"phone\": \"500\",\n" +
 //"      \"email\": \"ekoEEEEENTEST@email.com\",\n" +
 //"      \"street\": \"I AM TEST WITH POSTMAN\",\n" +
 //"      \"zip\": \"900\",\n" +
 //"      \"city\": \"ekocity\"\n" +
 //"}");
-//        
+        
 //        res.deletePerson(34);
         
     }

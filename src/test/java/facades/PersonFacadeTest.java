@@ -102,6 +102,7 @@ public class PersonFacadeTest {
 
     }
 
+    @Disabled
     @Test
     public void testGetPersonById() throws PersonNotFoundException {
         
