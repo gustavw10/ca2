@@ -122,7 +122,18 @@ public class PersonFacade implements IPersonFacade {
                 person.setEmail(p.getEmail());
                 person.getAddress().setStreet(p.getStreet());
                 person.getAddress().getCityinfo().setCity(p.getCity());
-                person.getAddress().getCityinfo().setZipCode(p.getZip());
+//              person.getAddress().getCityinfo().setZipCode(p.getZip());
+               
+                List<Phone> phones = person.getPhones();
+ 
+                for (int i = 0; i < phones.size(); i++) {
+                    em.remove(phones.get(i));
+                  }
+                
+                Query query = em.createQuery("DELETE FROM Address WHERE person_id = :id");
+                query.setParameter("id", p.getId());
+                query.executeUpdate();
+                
                 String[] listOfPhones = p.getPhones().split(",");
                 for(int i = 0; i < listOfPhones.length; i++){
                 Phone ph = new Phone(listOfPhones[i].trim());
@@ -147,7 +158,7 @@ public class PersonFacade implements IPersonFacade {
         } else {
             try {
                 List<Phone> phones = person.getPhones();
-
+                System.out.println(phones.size());
                 em.getTransaction().begin();
                 for (int i = 0; i < phones.size(); i++) {
                     em.remove(phones.get(i));

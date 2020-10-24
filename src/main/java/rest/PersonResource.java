@@ -94,7 +94,7 @@ public class PersonResource {
         PersonResource res = new PersonResource();
         res.addPerson("{\n" +
 "   \n" +
-"     \"firstName\": \"Ekeee4n\",\n" +
+"     \"firstName\": \"EKOCAMEN\",\n" +
 "      \"lastName\": \"Eko4name\",\n" +
 "      \"phone\": \"3500, 200003\",\n" +
 "      \"email\": \"ekoEEEEENTEST@email.com\",\n" +
@@ -102,19 +102,19 @@ public class PersonResource {
 "      \"zip\": \"2970\",\n" +
 "      \"city\": \"ekocity\"\n" +
 "}");
-//        
-//        res.updatePerson(4, "{\n" +
+        
+//        res.updatePerson(32, "{\n" +
 //"   \n" +
 //"     \"firstName\": \"A TEST WITH POSTMAN\",\n" +
-//"      \"lastName\": \"Eko4name\",\n" +
-//"      \"phone\": \"900\",\n" +
+//"      \"lastName\": \"Ekeadawo4name\",\n" +
+//"      \"phone\": \"702224\",\n" +
 //"      \"email\": \"ekoEEEEENTEST@email.com\",\n" +
 //"      \"street\": \"I AM TEST WITH POSTMAN\",\n" +
 //"      \"zip\": \"900\",\n" +
 //"      \"city\": \"ekocity\"\n" +
 //"}");
-        
-//        res.deletePerson(3);
+//        
+//        res.deletePerson(34);
         
     }
  
