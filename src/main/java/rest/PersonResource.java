@@ -112,7 +112,7 @@ public class PersonResource {
 //"      \"phone\": \"3500, 200003\",\n" +
 //"      \"email\": \"ekoEEEEENTEST@email.com\",\n" +
 //"      \"street\": \"addr\",\n" +
-//"      \"zip\": \"900\",\n" +
+//"      \"zip\": \"0999\",\n" +
 //"      \"city\": \"ekocity\"\n" +
 //"}");
         
@@ -122,7 +122,7 @@ public class PersonResource {
 //"      \"hobbies\": \"Airsoft, Akrobatik\",\n" +
 //"}");
 
-            res.addHobby(15, "Animation");
+//            res.addHobby(15, "Animation");
 //        
 //        res.updatePerson(40, "{\n" +
 //"   \n" +

@@ -11,8 +11,6 @@
         <class>entities.Phone</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
-            <property name="javax.persistence.sql-load-script-source" value="META-INF/zipScript.sql"/>
-            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
             <!-- DO NOT remove the line below. It's not set by the  entityUtils.EMF_Creator -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="eclipselink.canonicalmodel.subpackage" value="xx345y657"/>
